@@ -16,3 +16,10 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+security:
+  oauth2:
+    client:
+      client-id: demo
+      client-secret: demosecret
+      registered-redirect-uri: http://www.baidu.com
