@@ -1,4 +1,4 @@
-package org.walter.oauth2.authorization.server;
+package org.walter.oauth2;
 
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;

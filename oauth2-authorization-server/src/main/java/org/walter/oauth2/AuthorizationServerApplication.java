@@ -1,4 +1,4 @@
-package org.walter.oauth2.authorization.server;
+package org.walter.oauth2;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
