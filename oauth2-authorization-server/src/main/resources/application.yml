@@ -1,0 +1,18 @@
+server:
+  servlet:
+    context-path: /authServer
+  port: 7081
+
+spring:
+  # DataSource
+  datasource:
+    password: ''
+    url: jdbc:mysql://localhost/oauth2?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    username: root
+
+  # JPA
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
