@@ -1,0 +1,4 @@
+custom:
+  security:
+    test-uri-pattern: /test/**
+    login-page-uri: /login
