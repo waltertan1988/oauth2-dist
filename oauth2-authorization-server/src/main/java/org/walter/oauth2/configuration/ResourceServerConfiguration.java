@@ -29,7 +29,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .successHandler(authenticationSuccessHandler)
                 .and()
             .authorizeRequests()
-                .antMatchers(customSecurityProperties.getTestUriPattern(), customSecurityProperties.getLoginPageUri())
+                .antMatchers("/error", customSecurityProperties.getTestUriPattern(), customSecurityProperties.getLoginPageUri())
                     .permitAll()
                 .anyRequest()
                     .authenticated()

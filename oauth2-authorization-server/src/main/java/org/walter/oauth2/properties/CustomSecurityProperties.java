@@ -15,4 +15,6 @@ public class CustomSecurityProperties {
     private String testUriPattern;
     @Value("${login-page-uri}")
     private String loginPageUri;
+    @Value("${oauth2-grant-type}")
+    private String oauth2GrantType;
 }
