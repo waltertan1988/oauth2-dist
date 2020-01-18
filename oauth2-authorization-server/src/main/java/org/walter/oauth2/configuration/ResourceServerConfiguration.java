@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.walter.oauth2.properties.CustomSecurityProperties;
+import org.walter.oauth2.service.CustomHttp403ForbiddenEntryPoint;
 
 @Configuration
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
@@ -32,6 +33,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                     .permitAll()
                 .anyRequest()
                     .authenticated()
+                .and()
+            .exceptionHandling()
+                // 自定义无权限时的处理行为
+                .authenticationEntryPoint(new CustomHttp403ForbiddenEntryPoint())
                 .and()
             .csrf()
                 .disable();

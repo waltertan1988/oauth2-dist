@@ -1,3 +1,7 @@
+logging:
+  level:
+    org.springframework: debug
+
 server:
   servlet:
     context-path: /authServer
