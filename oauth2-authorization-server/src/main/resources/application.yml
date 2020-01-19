@@ -31,4 +31,4 @@ security:
     client:
       client-id: demo
       client-secret: demosecret
-      registered-redirect-uri: http://www.baidu.com
+      registered-redirect-uri: /authServer/oauth2Redirect
