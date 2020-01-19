@@ -17,4 +17,6 @@ public class CustomSecurityProperties {
     private String loginPageUri;
     @Value("${oauth2-grant-type}")
     private String oauth2GrantType;
+    @Value("${oauth2-approval-page}")
+    private String oauth2ApprovalPage;
 }

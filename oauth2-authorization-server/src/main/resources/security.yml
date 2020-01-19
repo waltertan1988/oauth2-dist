@@ -1,5 +1,6 @@
 custom:
   security:
+    oauth2-approval-page: /oauth2Approval
     oauth2-grant-type: custom
     test-uri-pattern: /test/**
     login-page-uri: /login
