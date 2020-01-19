@@ -10,9 +10,17 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+
 @Slf4j
 @Controller
 public class OAuth2Controller {
+
+    /**
+     * 自定义OAuth2授权页面
+     * @param request
+     * @param model
+     * @return
+     */
     @GetMapping("/oauth2Approval")
     public String confirmAccess(HttpServletRequest request, Map<String, Object> model) {
         log.info(">>>>>> authorizationRequest: {}", request.getAttribute("authorizationRequest"));

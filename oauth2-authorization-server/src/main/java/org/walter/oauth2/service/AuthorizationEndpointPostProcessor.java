@@ -7,6 +7,9 @@ import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoi
 import org.springframework.stereotype.Component;
 import org.walter.oauth2.properties.CustomSecurityProperties;
 
+/**
+ * 用自定义的OAuth2授权页面覆盖默认的页面
+ */
 @Component
 public class AuthorizationEndpointPostProcessor implements BeanPostProcessor {
     @Autowired
