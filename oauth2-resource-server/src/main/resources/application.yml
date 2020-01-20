@@ -4,8 +4,8 @@ logging:
 
 server:
   servlet:
-    context-path: /authServer
-  port: 7080
+    context-path: /resServer
+  port: 7081
 
 spring:
   mvc:
@@ -29,6 +29,6 @@ spring:
 security:
   oauth2:
     client:
-      client-id: demo
-      client-secret: demosecret
-      registered-redirect-uri: /authServer/oauth2Redirect
+      client-id: resServerDemo
+      client-secret: resServerDemosecret
+      registered-redirect-uri: http://localhost:7081/resServer/oauth2Redirect

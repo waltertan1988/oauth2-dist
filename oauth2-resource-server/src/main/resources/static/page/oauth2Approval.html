@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>授权请求</title>
+    </head>
+    <body>
+    <p>您是否同意授权？</p>
+        <form id="confirmationForm" name="confirmationForm" action="/authServer/oauth/authorize" method="post">
+            <input name="user_oauth_approval" value="true" type="hidden" />
+            <ul>
+                <li>
+                    <div class="form-group">
+                        scope.all:
+                        <input type="radio" name="scope.all" value="true" />同意
+                        <input type="radio" name="scope.all" value="false" checked="" />拒绝
+                    </div>
+                </li>
+            </ul>
+            <label><input name="authorize" value="确定" type="submit" /></label>
+        </form>
+    </body>
+</html>
