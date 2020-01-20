@@ -8,12 +8,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.walter.oauth2.properties.CustomSecurityProperties;
 import org.walter.oauth2.service.CustomHttp403ForbiddenEntryPoint;
 import org.walter.oauth2.service.CustomOauth2AuthenticationSuccessHandler;
 
 @Order(2) //保证基本的身份认证处理在oauth2授权前已经执行
 @Configuration
+@EnableAuthorizationServer
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired

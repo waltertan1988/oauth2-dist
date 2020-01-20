@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
@@ -48,6 +49,7 @@ public class OAuth2Controller {
      * @return
      */
     @GetMapping("/oauth2Redirect")
+    @ResponseBody
     public String oauth2Redirect(@RequestParam("code") String code, @RequestParam(value = "state") String state){
         log.info("code: {}, state: {}", code, state);
         return code + "|" + state;
