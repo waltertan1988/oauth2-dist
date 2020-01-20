@@ -13,10 +13,6 @@ import org.springframework.context.annotation.PropertySource;
 public class CustomSecurityProperties {
     @Value("${test-uri-pattern}")
     private String testUriPattern;
-    @Value("${login-page-uri}")
-    private String loginPageUri;
-    @Value("${oauth2-grant-type}")
-    private String oauth2GrantType;
-    @Value("${oauth2-approval-page}")
-    private String oauth2ApprovalPage;
+    @Value("${oauth2-authorize-request}")
+    private String oauth2AuthorizeRequest;
 }

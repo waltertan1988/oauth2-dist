@@ -1,6 +1,4 @@
 custom:
   security:
-    oauth2-approval-page: /oauth2Approval
-    oauth2-grant-type: custom
     test-uri-pattern: /test/**
-    login-page-uri: /login
+    oauth2-authorize-request: http://localhost:7080/authServer/oauth/authorize?response_type=code&client_id=resServer&scope=all&redirect_uri=http://localhost:7080/authServer/oauth2Redirect&state=http://localhost:7081/resServer/resource

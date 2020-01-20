@@ -26,8 +26,8 @@ public class CustomHttp403ForbiddenEntryPoint extends Http403ForbiddenEntryPoint
 		response.setStatus(HttpStatus.FORBIDDEN.value());
 		PrintWriter out = response.getWriter();
 		response.setContentType("text/html;charset=UTF-8");
-		String loginURL = request.getContextPath() + customSecurityProperties.getLoginPageUri();
-		out.println(String.format("你暂无权限访问资源[%s]，请先<a href='%s'>登录</a><br>", request.getRequestURI(), loginURL));
+		out.println(String.format("你暂无权限访问资源[%s]，请先<a href='%s'>授权</a><br>",
+				request.getRequestURI(), customSecurityProperties.getOauth2AuthorizeRequest()));
 		out.println(new ObjectMapper().writeValueAsString(exception.getMessage()));
 		out.flush();
 	}

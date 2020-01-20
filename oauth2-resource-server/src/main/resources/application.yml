@@ -25,10 +25,3 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
-security:
-  oauth2:
-    client:
-      client-id: resServerDemo
-      client-secret: resServerDemosecret
-      registered-redirect-uri: http://localhost:7081/resServer/oauth2Redirect

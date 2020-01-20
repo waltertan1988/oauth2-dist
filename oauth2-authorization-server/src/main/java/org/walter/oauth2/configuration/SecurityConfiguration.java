@@ -7,13 +7,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.walter.oauth2.properties.CustomSecurityProperties;
 import org.walter.oauth2.service.CustomHttp403ForbiddenEntryPoint;
 import org.walter.oauth2.service.CustomOauth2AuthenticationSuccessHandler;
 
 @Configuration
-@EnableAuthorizationServer
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomSecurityProperties customSecurityProperties;
@@ -30,10 +28,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .successHandler(customOauth2AuthenticationSuccessHandler)
                 .and()
             .authorizeRequests()
-                .antMatchers("/error", customSecurityProperties.getTestUriPattern(), customSecurityProperties.getLoginPageUri())
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                .antMatchers(permitAntPatterns()).permitAll()
+                .anyRequest().authenticated()
                 .and()
             .exceptionHandling()
                 // 自定义无权限时的处理行为
@@ -41,6 +37,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
             .csrf()
                 .disable();
+    }
+
+    private String[] permitAntPatterns(){
+        return new String[]{
+                "/error",
+                customSecurityProperties.getTestUriPattern(),
+                customSecurityProperties.getLoginPageUri()
+        };
     }
 
     @Bean
