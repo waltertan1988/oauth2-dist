@@ -14,12 +14,15 @@ import org.walter.oauth2.properties.CustomSecurityProperties;
 public class AuthorizationEndpointPostProcessor implements BeanPostProcessor {
     @Autowired
     private CustomSecurityProperties customSecurityProperties;
+    @Autowired
+    private RedisAuthorizationCodeServices redisAuthorizationCodeServices;
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if(bean instanceof AuthorizationEndpoint){
             AuthorizationEndpoint endpoint = (AuthorizationEndpoint) bean;
             endpoint.setUserApprovalPage("forward:" + customSecurityProperties.getOauth2ApprovalPage());
+            endpoint.setAuthorizationCodeServices(redisAuthorizationCodeServices);
         }
 
         return bean;

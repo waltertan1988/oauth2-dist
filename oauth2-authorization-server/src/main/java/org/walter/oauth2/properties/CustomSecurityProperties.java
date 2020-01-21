@@ -11,6 +11,8 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:security.yml")
 @ConfigurationProperties("custom.security")
 public class CustomSecurityProperties {
+    @Value("${redis-session-alive-minutes}")
+    private Long redisSessionAliveMinutes;
     @Value("${test-uri-pattern}")
     private String testUriPattern;
     @Value("${login-page-uri}")
@@ -19,4 +21,6 @@ public class CustomSecurityProperties {
     private String oauth2GrantType;
     @Value("${oauth2-approval-page}")
     private String oauth2ApprovalPage;
+    @Value("${oauth2-authcode-alive-seconds}")
+    private Long oauth2AuthCodeAliveSeconds;
 }
