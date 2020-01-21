@@ -34,7 +34,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     private String[] permitAntPatterns(){
         return new String[]{
-                "/error",
+                "/error", "/oauth2/redirect",
                 customSecurityProperties.getTestUriPattern()
         };
     }

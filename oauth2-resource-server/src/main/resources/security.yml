@@ -1,4 +1,4 @@
 custom:
   security:
     test-uri-pattern: /test/**
-    oauth2-authorize-request: http://localhost:7080/authServer/oauth/authorize?response_type=code&client_id=resServer&scope=all&redirect_uri=http://localhost:7080/authServer/oauth2Redirect&state=http://localhost:7081/resServer/resource
+    oauth2-authorize-request: http://localhost:7080/authServer/oauth/authorize?response_type=code&client_id=resServer&scope=all&redirect_uri=http://localhost:7081/resServer/oauth2/redirect&state=http://localhost:7081/resServer/resource
