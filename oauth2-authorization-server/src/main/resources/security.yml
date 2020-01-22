@@ -4,6 +4,6 @@ custom:
     redis-session-alive-minutes: 30
     oauth2-approval-page: /oauth2/approval
     oauth2-grant-type: custom
-    oauth2-authcode-alive-seconds: 30
+    oauth2-authcode-alive-seconds: 3600
     test-uri-pattern: /test/**
     login-page-uri: /login

@@ -20,7 +20,7 @@ public class OAuth2Controller {
      */
     @GetMapping("/redirect")
     @ResponseBody
-    public String oauth2Redirect(@RequestParam("code") String code, @RequestParam(value = "state") String state){
+    public String redirect(@RequestParam("code") String code, @RequestParam(value = "state") String state){
         log.info("code: {}, state: {}", code, state);
         return code + "|" + state;
     }
