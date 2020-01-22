@@ -15,4 +15,10 @@ public class CustomSecurityProperties {
     private String testUriPattern;
     @Value("${oauth2-authorize-request}")
     private String oauth2AuthorizeRequest;
+    @Value("${oauth2-token-request}")
+    private String oauth2TokenRequest;
+    @Value("${oauth2-client-id}")
+    private String oauth2ClientId;
+    @Value("${oauth2-client-secret}")
+    private String oauth2ClientSecret;
 }

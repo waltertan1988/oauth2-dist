@@ -50,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private String[] permitAntPatterns(){
         return new String[]{
-                "/error", "/oauth/token",
+                "/error",
                 customSecurityProperties.getTestUriPattern(),
                 customSecurityProperties.getLoginPageUri()
         };
