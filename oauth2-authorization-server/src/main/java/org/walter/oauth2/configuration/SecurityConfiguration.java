@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.walter.oauth2.properties.CustomSecurityProperties;
 import org.walter.oauth2.service.CustomHttp403ForbiddenEntryPoint;
 import org.walter.oauth2.service.CustomOauth2AuthenticationSuccessHandler;
+import org.walter.oauth2.service.CustomRedisSecurityContextRepository;
 
 @Order(-1)
 @Configuration
@@ -21,11 +22,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private CustomOauth2AuthenticationSuccessHandler customOauth2AuthenticationSuccessHandler;
     @Autowired
     private CustomHttp403ForbiddenEntryPoint customHttp403ForbiddenEntryPoint;
+    @Autowired
+    private CustomRedisSecurityContextRepository customRedisSecurityContextRepository;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.
-            formLogin()
+        http
+            .securityContext()
+                // 使用Redis代替默认的HttpSession来保存SecurityContext
+                .securityContextRepository(customRedisSecurityContextRepository)
+                .and()
+            .formLogin()
                 .loginPage(customSecurityProperties.getLoginPageUri())
                 .successHandler(customOauth2AuthenticationSuccessHandler)
                 .and()

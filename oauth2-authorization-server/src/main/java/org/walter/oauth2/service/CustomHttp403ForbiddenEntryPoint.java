@@ -1,12 +1,12 @@
 package org.walter.oauth2.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.stereotype.Component;
 import org.walter.oauth2.properties.CustomSecurityProperties;
+import org.walter.oauth2.utils.SerializerUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ public class CustomHttp403ForbiddenEntryPoint extends Http403ForbiddenEntryPoint
 		response.setContentType("text/html;charset=UTF-8");
 		String loginURL = request.getContextPath() + customSecurityProperties.getLoginPageUri();
 		out.println(String.format("你暂无权限访问资源[%s]，请先<a href='%s'>登录</a><br>", request.getRequestURI(), loginURL));
-		out.println(new ObjectMapper().writeValueAsString(exception.getMessage()));
+		out.println(SerializerUtil.toJson(exception.getMessage()));
 		out.flush();
 	}
 }

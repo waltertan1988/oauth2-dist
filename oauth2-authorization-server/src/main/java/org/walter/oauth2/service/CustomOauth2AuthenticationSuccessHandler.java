@@ -1,6 +1,5 @@
 package org.walter.oauth2.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.StringUtils;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.walter.oauth2.constant.Constants;
 import org.walter.oauth2.constant.GrantType;
 import org.walter.oauth2.properties.CustomSecurityProperties;
+import org.walter.oauth2.utils.SerializerUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +31,8 @@ public class CustomOauth2AuthenticationSuccessHandler extends SavedRequestAwareA
 	private ClientDetailsService clientDetailsService;
 	@Autowired
 	private AuthorizationServerTokenServices authorizationServerTokenServices;
+	@Autowired
+	private CookieService cookieService;
 
 	/**
 	 * 认证成功后的处理逻辑
@@ -38,6 +40,9 @@ public class CustomOauth2AuthenticationSuccessHandler extends SavedRequestAwareA
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
+
+		cookieService.addAuthenticationCookie(response, authentication);
+
 		String grantType = request.getParameter(Constants.LoginFormFieldName.GRANT_TYPE);
 
 		if(StringUtils.equals(grantType, GrantType.CUSTOM.getValue())){
@@ -55,7 +60,7 @@ public class CustomOauth2AuthenticationSuccessHandler extends SavedRequestAwareA
 			OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
 			OAuth2AccessToken oAuth2AccessToken = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
 			PrintWriter out = response.getWriter();
-			out.print(new ObjectMapper().writeValueAsString(oAuth2AccessToken));
+			out.print(SerializerUtil.toJson(oAuth2AccessToken));
 			out.flush();
 		}else{
 			super.onAuthenticationSuccess(request, response, authentication);

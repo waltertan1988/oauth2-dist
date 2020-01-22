@@ -36,4 +36,4 @@ spring:
         max-active: 8
         min-idle: 1
         max-idle: 8
-        max-wait: 10000ms
+        max-wait: 5000ms

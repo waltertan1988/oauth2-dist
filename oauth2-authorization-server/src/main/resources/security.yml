@@ -1,5 +1,6 @@
 custom:
   security:
+    authentication-cookie-key: authentication
     redis-session-alive-minutes: 30
     oauth2-approval-page: /oauth2/approval
     oauth2-grant-type: custom
