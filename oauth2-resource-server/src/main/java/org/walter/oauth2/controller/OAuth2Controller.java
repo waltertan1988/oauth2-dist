@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.walter.oauth2.properties.CustomSecurityProperties;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
 
 
@@ -39,7 +41,9 @@ public class OAuth2Controller {
      */
     @GetMapping("/redirect")
     @ResponseBody
-    public String redirect(@RequestParam("code") String code, @RequestParam(value = "state") String state){
+    public String redirect(HttpServletResponse response,
+                           @RequestParam("code") String code,
+                           @RequestParam(value = "state") String state){
         log.info("code: {}, state: {}", code, state);
 
         String tokenRequestUrl = customSecurityProperties.getOauth2TokenRequest();
@@ -50,11 +54,26 @@ public class OAuth2Controller {
         ResponseEntity<OAuth2AccessToken> entity = restTemplate.postForEntity(tokenRequestUrl, requestEntity, OAuth2AccessToken.class);
         if(HttpStatus.OK.equals(entity.getStatusCode())){
             OAuth2AccessToken accessToken = entity.getBody();
-
-            return code + "|" + state + "|" + accessToken.getValue();
+            // 把AccessToken写入客户端
+            sendAccessTokenToClient(response, accessToken.getValue());
+            return String.format("code=%s\nstate=%s\ntoken=%s", code, state, accessToken.getValue());
         }
+        return String.format("%s error\ncode=%s\nstate=%s", entity.getStatusCode().value(), code, state);
+    }
 
-        return entity.getStatusCode().value() + ": Fail for " + code + "|" + state;
+    /**
+     * 把AccessToken回传到客户端
+     * @param response
+     * @param tokenValue
+     */
+    protected void sendAccessTokenToClient(HttpServletResponse response, String tokenValue){
+        response.addCookie(createAccessTokenCookie(tokenValue));
+    }
+
+    private Cookie createAccessTokenCookie(String tokenValue){
+        Cookie cookie = new Cookie(customSecurityProperties.getOauth2TokenCookieKey(), tokenValue);
+        cookie.setMaxAge(-1);
+        return cookie;
     }
 
     private HttpHeaders buildRequestHeader(){
@@ -76,6 +95,6 @@ public class OAuth2Controller {
         requestBody.add(OAuth2Utils.REDIRECT_URI, customSecurityProperties.getOauth2AuthorizeRequestQueryParams().get(OAuth2Utils.REDIRECT_URI));
         requestBody.add(OAuth2Utils.SCOPE, scope);
         requestBody.add(OAuth2Utils.STATE, state);
-        return  requestBody;
+        return requestBody;
     }
 }

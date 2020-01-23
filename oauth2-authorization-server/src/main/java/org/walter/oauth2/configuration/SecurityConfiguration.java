@@ -65,6 +65,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private String[] permitAntPatterns(){
         return new String[]{
                 "/error",
+                "/oauth2/readAccessToken",
+                "/oauth2/readAuthentication",
+                "/oauth2/removeAccessToken",
                 customSecurityProperties.getTestUriPattern(),
                 customSecurityProperties.getLoginPageUri()
         };

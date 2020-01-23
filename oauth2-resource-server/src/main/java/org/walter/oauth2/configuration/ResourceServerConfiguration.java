@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.walter.oauth2.properties.CustomSecurityProperties;
 import org.walter.oauth2.service.CustomHttp403ForbiddenEntryPoint;
+import org.walter.oauth2.service.RemoteAuthorizationServerTokenStore;
 
 @Configuration
 @EnableResourceServer
@@ -16,6 +17,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     private CustomSecurityProperties customSecurityProperties;
     @Autowired
     private CustomHttp403ForbiddenEntryPoint customHttp403ForbiddenEntryPoint;
+    @Autowired
+    private RemoteAuthorizationServerTokenStore remoteAuthorizationServerTokenStore;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -41,6 +44,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        super.configure(resources);
+        resources.tokenStore(remoteAuthorizationServerTokenStore);
     }
 }

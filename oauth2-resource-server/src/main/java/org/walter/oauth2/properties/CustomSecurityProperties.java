@@ -24,6 +24,14 @@ public class CustomSecurityProperties {
     private String oauth2ClientId;
     @Getter @Value("${oauth2-client-secret}")
     private String oauth2ClientSecret;
+    @Getter @Value("${oauth2-token-cookie-key}")
+    private String oauth2TokenCookieKey;
+    @Getter @Value("${oauth2-readAccessToken-request}")
+    private String oauth2ReadAccessTokenRequest;
+    @Getter @Value("${oauth2-readAuthentication-request}")
+    private String oauth2ReadAuthenticationRequest;
+    @Getter @Value("${oauth2-removeAccessToken-request}")
+    private String oauth2RemoveAccessTokenRequest;
 
     private Map<String, String> oauth2AuthorizeRequestQueryParamMap;
     public Map<String, String> getOauth2AuthorizeRequestQueryParams(){
