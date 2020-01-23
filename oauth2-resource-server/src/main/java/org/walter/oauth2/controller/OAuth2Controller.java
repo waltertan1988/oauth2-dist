@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.util.OAuth2Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -66,14 +67,15 @@ public class OAuth2Controller {
         return requestHeaders;
     }
 
-    private MultiValueMap<String, String> buildRequestBody(String authCode, String redirectUri, String scope){
+    private MultiValueMap<String, String> buildRequestBody(String authCode, String state, String scope){
         MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
-        requestBody.add("grant_type", "authorization_code");
+        requestBody.add(OAuth2Utils.GRANT_TYPE, "authorization_code");
         requestBody.add("code", authCode);
-        requestBody.add("client_id", customSecurityProperties.getOauth2ClientId());
+        requestBody.add(OAuth2Utils.CLIENT_ID, customSecurityProperties.getOauth2ClientId());
         requestBody.add("client_secret", customSecurityProperties.getOauth2ClientSecret());
-        requestBody.add("redirect_uri", redirectUri);
-        requestBody.add("scope", scope);
+        requestBody.add(OAuth2Utils.REDIRECT_URI, customSecurityProperties.getOauth2AuthorizeRequestQueryParams().get(OAuth2Utils.REDIRECT_URI));
+        requestBody.add(OAuth2Utils.SCOPE, scope);
+        requestBody.add(OAuth2Utils.STATE, state);
         return  requestBody;
     }
 }

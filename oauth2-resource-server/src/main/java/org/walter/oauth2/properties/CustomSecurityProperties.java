@@ -1,24 +1,49 @@
 package org.walter.oauth2.properties;
 
-import lombok.Data;
+import com.google.common.collect.Maps;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-@Data
+import java.util.Collections;
+import java.util.Map;
+
 @Configuration
 @PropertySource("classpath:security.yml")
 @ConfigurationProperties("custom.security")
 public class CustomSecurityProperties {
-    @Value("${test-uri-pattern}")
+    @Getter @Value("${test-uri-pattern}")
     private String testUriPattern;
-    @Value("${oauth2-authorize-request}")
+    @Getter @Value("${oauth2-authorize-request}")
     private String oauth2AuthorizeRequest;
-    @Value("${oauth2-token-request}")
+    @Getter @Value("${oauth2-token-request}")
     private String oauth2TokenRequest;
-    @Value("${oauth2-client-id}")
+    @Getter @Value("${oauth2-client-id}")
     private String oauth2ClientId;
-    @Value("${oauth2-client-secret}")
+    @Getter @Value("${oauth2-client-secret}")
     private String oauth2ClientSecret;
+
+    private Map<String, String> oauth2AuthorizeRequestQueryParamMap;
+    public Map<String, String> getOauth2AuthorizeRequestQueryParams(){
+        if(oauth2AuthorizeRequestQueryParamMap == null){
+            synchronized (this){
+                if(oauth2AuthorizeRequestQueryParamMap == null){
+                    Map<String, String> map = Maps.newHashMap();
+                    String queryString = oauth2AuthorizeRequest.split("\\?")[1];
+                    for(String entryString : queryString.split("&")){
+                        String[] entry = entryString.split("=");
+                        if(entry.length == 1){
+                            map.put(entry[0], entry[0]);
+                        }else{
+                            map.put(entry[0], entry[1]);
+                        }
+                    }
+                    oauth2AuthorizeRequestQueryParamMap = Collections.unmodifiableMap(map);
+                }
+            }
+        }
+        return oauth2AuthorizeRequestQueryParamMap;
+    }
 }
