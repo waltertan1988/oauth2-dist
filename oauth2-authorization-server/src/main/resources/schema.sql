@@ -12,3 +12,7 @@ CREATE TABLE `oauth_client_details` (
   `autoapprove` varchar(255) DEFAULT 'false',
   PRIMARY KEY (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+insert into `oauth_client_details`
+(`client_id`, `resource_ids`, `client_secret`, `scope`, `authorized_grant_types`, `web_server_redirect_uri`, `authorities`, `access_token_validity`, `refresh_token_validity`, `additional_information`, `autoapprove`) values
+('resServer',NULL,'resServerSecret',NULL,NULL,'http://localhost:7081/resServer/oauth2/redirect',NULL,'3600','86400',NULL,'false');
