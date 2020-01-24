@@ -9,9 +9,14 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.approval.ApprovalStoreUserApprovalHandler;
+import org.springframework.security.oauth2.provider.approval.UserApprovalHandler;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.walter.oauth2.service.CustomApprovalStoreUserApprovalHandler;
 import org.walter.oauth2.service.RedisAuthorizationCodeServices;
 
 import javax.sql.DataSource;
@@ -33,9 +38,25 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints
-                .authorizationCodeServices(redisAuthorizationCodeServices)
-                .tokenStore(redisTokenStore());
+        endpoints.authorizationCodeServices(redisAuthorizationCodeServices)
+                .tokenStore(redisTokenStore())
+                .setClientDetailsService(jdbcClientDetailsService());
+
+        ApprovalStoreUserApprovalHandler innerUserApprovalHandler =
+                (ApprovalStoreUserApprovalHandler)endpoints.getUserApprovalHandler();
+
+        endpoints.userApprovalHandler(customApprovalStoreUserApprovalHandler(innerUserApprovalHandler))
+                .tokenEnhancer(jwtAccessTokenConverter());
+    }
+
+    @Bean
+    public TokenEnhancer jwtAccessTokenConverter(){
+        return new JwtAccessTokenConverter();
+    }
+
+    public UserApprovalHandler customApprovalStoreUserApprovalHandler(ApprovalStoreUserApprovalHandler innerUserApprovalHandler){
+        UserApprovalHandler handler = new CustomApprovalStoreUserApprovalHandler(innerUserApprovalHandler);
+        return handler;
     }
 
     @Bean
