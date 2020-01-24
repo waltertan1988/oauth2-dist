@@ -2,6 +2,8 @@ package org.walter.oauth2.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -9,14 +11,12 @@ import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.walter.oauth2.properties.CustomSecurityProperties;
 import org.walter.oauth2.utils.SerializerUtil;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 /**
@@ -37,14 +37,11 @@ public class RemoteAuthorizationServerTokenStore implements TokenStore {
      */
     @Override
     public OAuth2AccessToken readAccessToken(String requestToken) {
-
-        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-        for (Cookie cookie : request.getCookies()) {
-            log.info(">>>>>>name:{}, value:{}", cookie.getName(), cookie.getValue());
-        }
-
-        String url = customSecurityProperties.getOauth2ReadAccessTokenRequest() + "?token=" + requestToken;
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        String url = customSecurityProperties.getOauth2ReadAccessTokenRequest();
+        HttpHeaders requestHeaders = buildRequestHeader(requestToken);
+        MultiValueMap<String, String> requestBody = buildRequestBody(requestToken);
+        HttpEntity<MultiValueMap> requestEntity = new HttpEntity<>(requestBody, requestHeaders);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
 
         if(!HttpStatus.OK.equals(response.getStatusCode())){
             log.error("Fail to fetch OAuth2AccessToken: {}", response.getBody());
@@ -55,8 +52,11 @@ public class RemoteAuthorizationServerTokenStore implements TokenStore {
 
     @Override
     public OAuth2Authentication readAuthentication(OAuth2AccessToken token) {
-        String url = customSecurityProperties.getOauth2ReadAuthenticationRequest() + "?token=" + token.getValue();
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        String url = customSecurityProperties.getOauth2ReadAuthenticationRequest();
+        HttpHeaders requestHeaders = buildRequestHeader(token.getValue());
+        MultiValueMap<String, String> requestBody = buildRequestBody(token.getValue());
+        HttpEntity<MultiValueMap> requestEntity = new HttpEntity<>(requestBody, requestHeaders);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
 
         if(!HttpStatus.OK.equals(response.getStatusCode())){
             log.error("Fail to fetch OAuth2Authentication: {}", response.getBody());
@@ -67,12 +67,28 @@ public class RemoteAuthorizationServerTokenStore implements TokenStore {
 
     @Override
     public void removeAccessToken(OAuth2AccessToken token) {
-        String url = customSecurityProperties.getOauth2RemoveAccessTokenRequest() + "?token=" + token.getValue();
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        String url = customSecurityProperties.getOauth2RemoveAccessTokenRequest();
+        HttpHeaders requestHeaders = buildRequestHeader(token.getValue());
+        MultiValueMap<String, String> requestBody = buildRequestBody(token.getValue());
+        HttpEntity<MultiValueMap> requestEntity = new HttpEntity<>(requestBody, requestHeaders);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
 
         if(!HttpStatus.OK.equals(response.getStatusCode())){
             log.error("Fail to removeAccessToken: {}", response.getBody());
         }
+    }
+
+    private MultiValueMap<String, String> buildRequestBody(String tokenValue){
+        MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+        requestBody.add("token", tokenValue);
+        return requestBody;
+    }
+
+    private HttpHeaders buildRequestHeader(String tokenValue){
+        HttpHeaders requestHeaders = new HttpHeaders();
+        String authorizationHeaderValue = String.format("%s %s", OAuth2AccessToken.BEARER_TYPE, tokenValue);
+        requestHeaders.add("Authorization", authorizationHeaderValue);
+        return requestHeaders;
     }
 
     @Override

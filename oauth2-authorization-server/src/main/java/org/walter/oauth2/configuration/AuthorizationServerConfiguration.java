@@ -12,11 +12,10 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.approval.ApprovalStoreUserApprovalHandler;
 import org.springframework.security.oauth2.provider.approval.UserApprovalHandler;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
-import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.walter.oauth2.service.CustomApprovalStoreUserApprovalHandler;
+import org.walter.oauth2.service.CustomTokenEnhancer;
 import org.walter.oauth2.service.RedisAuthorizationCodeServices;
 
 import javax.sql.DataSource;
@@ -30,6 +29,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private RedisAuthorizationCodeServices redisAuthorizationCodeServices;
     @Autowired
     private RedisConnectionFactory redisConnectionFactory;
+    @Autowired
+    private CustomTokenEnhancer customTokenEnhancer;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -46,12 +47,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 (ApprovalStoreUserApprovalHandler)endpoints.getUserApprovalHandler();
 
         endpoints.userApprovalHandler(customApprovalStoreUserApprovalHandler(innerUserApprovalHandler))
-                .tokenEnhancer(jwtAccessTokenConverter());
-    }
-
-    @Bean
-    public TokenEnhancer jwtAccessTokenConverter(){
-        return new JwtAccessTokenConverter();
+                .tokenEnhancer(customTokenEnhancer);
     }
 
     public UserApprovalHandler customApprovalStoreUserApprovalHandler(ApprovalStoreUserApprovalHandler innerUserApprovalHandler){

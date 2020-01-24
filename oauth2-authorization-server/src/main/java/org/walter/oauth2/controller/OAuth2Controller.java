@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.walter.oauth2.utils.SerializerUtil;
@@ -53,7 +54,7 @@ public class OAuth2Controller {
         return "/oauth2/approval";
     }
 
-    @GetMapping("/readAccessToken")
+    @PostMapping("/readAccessToken")
     public ResponseEntity<String> readAccessToken(@RequestParam("token") String token){
         OAuth2AccessToken oAuth2AccessToken;
 
@@ -75,7 +76,7 @@ public class OAuth2Controller {
         return getResponse(SerializerUtil.serialize(oAuth2AccessToken), HttpStatus.OK);
     }
 
-    @GetMapping("/readAuthentication")
+    @PostMapping("/readAuthentication")
     public ResponseEntity<String> readAuthentication(@RequestParam("token") String token){
         OAuth2Authentication oAuth2Authentication;
 
@@ -93,7 +94,7 @@ public class OAuth2Controller {
         return getResponse(SerializerUtil.serialize(oAuth2Authentication), HttpStatus.OK);
     }
 
-    @GetMapping("/removeAccessToken")
+    @PostMapping("/removeAccessToken")
     public ResponseEntity<String> removeAccessToken(@RequestParam("token") String token){
         try{
             redisTokenStore.removeAccessToken(token);

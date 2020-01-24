@@ -1,12 +1,16 @@
 package org.walter.oauth2.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.authentication.BearerTokenExtractor;
+import org.springframework.security.oauth2.provider.authentication.TokenExtractor;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.walter.oauth2.constant.Constants;
 import org.walter.oauth2.properties.CustomSecurityProperties;
 import org.walter.oauth2.utils.SerializerUtil;
@@ -15,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Component
 public class CustomRedisSecurityContextRepository implements SecurityContextRepository {
     @Autowired
@@ -23,6 +28,10 @@ public class CustomRedisSecurityContextRepository implements SecurityContextRepo
     private CustomSecurityProperties customSecurityProperties;
     @Autowired
     private CookieService cookieService;
+    @Autowired
+    private CustomTokenEnhancer customTokenEnhancer;
+
+    private TokenExtractor tokenExtractor = new BearerTokenExtractor();
 
     @Override
     public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
@@ -54,7 +63,7 @@ public class CustomRedisSecurityContextRepository implements SecurityContextRepo
     }
 
     private SecurityContext readSecurityContextFromRedis(HttpServletRequest request) {
-        String username = cookieService.resolveUsername(request.getCookies());
+        String username = resolveUsername(request);
         if(null == username){
             return null;
         }
@@ -67,6 +76,32 @@ public class CustomRedisSecurityContextRepository implements SecurityContextRepo
         }
 
         return contextFromRedis;
+    }
+
+    private String resolveUsername(HttpServletRequest request){
+        // 尝试从Cookie中获取username
+        String username = cookieService.resolveUsername(request.getCookies());
+        if(!StringUtils.isEmpty(username)){
+            return username;
+        }
+
+        // 尝试从Header中获取username
+        username = resolveUsernameFromHeader(request);
+        if(!StringUtils.isEmpty(username)){
+            return username;
+        }
+
+        return null;
+    }
+
+    private String resolveUsernameFromHeader(HttpServletRequest request){
+        try{
+            String tokenValue = (String) tokenExtractor.extract(request).getPrincipal();
+            return customTokenEnhancer.getUsername(tokenValue);
+        }catch (Exception e){
+            log.warn("Cannot resolve username from request header [Authorization]");
+            return null;
+        }
     }
 
     protected SecurityContext generateNewContext() {

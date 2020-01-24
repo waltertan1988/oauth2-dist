@@ -10,10 +10,7 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.ApprovalStoreUserApprovalHandler;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -59,11 +56,6 @@ public class CustomApprovalStoreUserApprovalHandler extends ApprovalStoreUserApp
      * @throws Exception
      */
     protected void doAfterDenied(AuthorizationRequest authorizationRequest, Authentication userAuthentication) throws Exception{
-    }
-
-    private HttpServletResponse getCurrentResponse(){
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-        return requestAttributes.getResponse();
     }
 
     @Override
