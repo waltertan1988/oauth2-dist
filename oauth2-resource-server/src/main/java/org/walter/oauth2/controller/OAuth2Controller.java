@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.walter.oauth2.properties.CustomSecurityProperties;
+import org.walter.oauth2.utils.SerializerUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -44,8 +45,6 @@ public class OAuth2Controller {
     public String redirect(HttpServletResponse response,
                            @RequestParam("code") String code,
                            @RequestParam(value = "state") String state){
-        log.info("code: {}, state: {}", code, state);
-
         String tokenRequestUrl = customSecurityProperties.getOauth2TokenRequest();
         MultiValueMap<String, String> requestBody = buildRequestBody(code, state, "all");
         HttpHeaders requestHeaders = buildRequestHeader();
@@ -56,9 +55,13 @@ public class OAuth2Controller {
             OAuth2AccessToken accessToken = entity.getBody();
             // 把AccessToken写入客户端
             sendAccessTokenToClient(response, accessToken.getValue());
-            return String.format("code=%s\nstate=%s\ntoken=%s", code, state, accessToken.getValue());
+            return String.format("code=%s<br>" +
+                    "state=%s<br>" +
+                    "token=%s", code, state, SerializerUtil.toJson(accessToken));
         }
-        return String.format("%s error\ncode=%s\nstate=%s", entity.getStatusCode().value(), code, state);
+        return String.format("%s error<br>" +
+                "code=%s<br>" +
+                "state=%s", entity.getStatusCode().value(), code, state);
     }
 
     /**

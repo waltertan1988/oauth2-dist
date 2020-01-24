@@ -10,9 +10,13 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.walter.oauth2.properties.CustomSecurityProperties;
 import org.walter.oauth2.utils.SerializerUtil;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 /**
@@ -33,6 +37,12 @@ public class RemoteAuthorizationServerTokenStore implements TokenStore {
      */
     @Override
     public OAuth2AccessToken readAccessToken(String requestToken) {
+
+        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+        for (Cookie cookie : request.getCookies()) {
+            log.info(">>>>>>name:{}, value:{}", cookie.getName(), cookie.getValue());
+        }
+
         String url = customSecurityProperties.getOauth2ReadAccessTokenRequest() + "?token=" + requestToken;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 

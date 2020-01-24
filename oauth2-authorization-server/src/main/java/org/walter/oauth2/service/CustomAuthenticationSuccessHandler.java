@@ -24,7 +24,7 @@ import java.io.PrintWriter;
 
 @Slf4j
 @Component
-public class CustomOauth2AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 	@Autowired
 	private CustomSecurityProperties customSecurityProperties;
 	@Autowired

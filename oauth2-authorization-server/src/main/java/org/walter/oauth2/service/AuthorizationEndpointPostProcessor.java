@@ -21,7 +21,7 @@ public class AuthorizationEndpointPostProcessor implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if(bean instanceof AuthorizationEndpoint){
             AuthorizationEndpoint endpoint = (AuthorizationEndpoint) bean;
-            endpoint.setUserApprovalPage("forward:" + customSecurityProperties.getOauth2ApprovalPage());
+            endpoint.setUserApprovalPage("forward:" + customSecurityProperties.getOauth2ApprovalRequest());
             endpoint.setAuthorizationCodeServices(redisAuthorizationCodeServices);
         }
 

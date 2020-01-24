@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.walter.oauth2.properties.CustomSecurityProperties;
 import org.walter.oauth2.service.CustomAuthCodeTokenEndpointAuthenticationFilter;
 import org.walter.oauth2.service.CustomHttp403ForbiddenEntryPoint;
-import org.walter.oauth2.service.CustomOauth2AuthenticationSuccessHandler;
+import org.walter.oauth2.service.CustomAuthenticationSuccessHandler;
 import org.walter.oauth2.service.CustomRedisSecurityContextRepository;
 
 @Order(-1)
@@ -28,7 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
     @Autowired
-    private CustomOauth2AuthenticationSuccessHandler customOauth2AuthenticationSuccessHandler;
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     @Autowired
     private CustomHttp403ForbiddenEntryPoint customHttp403ForbiddenEntryPoint;
     @Autowired
@@ -48,7 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
             .formLogin()
                 .loginPage(customSecurityProperties.getLoginPageUri())
-                .successHandler(customOauth2AuthenticationSuccessHandler)
+                .successHandler(customAuthenticationSuccessHandler)
                 .and()
             .authorizeRequests()
                 .antMatchers(permitAntPatterns()).permitAll()
@@ -65,9 +65,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private String[] permitAntPatterns(){
         return new String[]{
                 "/error",
-                "/oauth2/readAccessToken",
-                "/oauth2/readAuthentication",
-                "/oauth2/removeAccessToken",
                 customSecurityProperties.getTestUriPattern(),
                 customSecurityProperties.getLoginPageUri()
         };
