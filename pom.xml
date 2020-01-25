@@ -23,6 +23,7 @@
 		<module>oauth2-authorization-server</module>
 		<module>oauth2-resource-server</module>
 		<module>oauth2-commons</module>
+		<module>oauth2-client-sdk</module>
 	</modules>
 
 	<dependencyManagement>
@@ -30,6 +31,12 @@
 			<dependency>
 				<groupId>org.walter.oauth2</groupId>
 				<artifactId>oauth2-commons</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.walter.oauth2</groupId>
+				<artifactId>oauth2-client-sdk</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>

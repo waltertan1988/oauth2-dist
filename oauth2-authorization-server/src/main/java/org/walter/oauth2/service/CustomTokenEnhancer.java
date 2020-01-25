@@ -5,7 +5,7 @@ import org.springframework.security.oauth2.common.*;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.stereotype.Component;
-import org.walter.oauth2.utils.SerializerUtil;
+import org.walter.oauth2.SerializerUtil;
 
 import java.util.Base64;
 import java.util.Map;

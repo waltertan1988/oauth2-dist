@@ -6,7 +6,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.stereotype.Component;
 import org.walter.oauth2.properties.CustomSecurityProperties;
-import org.walter.oauth2.utils.SerializerUtil;
+import org.walter.oauth2.SerializerUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

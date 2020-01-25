@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.walter.oauth2.properties.CustomSecurityProperties;
-import org.walter.oauth2.utils.SerializerUtil;
+import org.walter.oauth2.SerializerUtil;
+import org.walter.oauth2.properties.OAuth2SecurityProperties;
 
 import java.util.Collection;
 
@@ -26,7 +26,7 @@ import java.util.Collection;
 @Component
 public class RemoteAuthorizationServerTokenStore implements TokenStore {
     @Autowired
-    private CustomSecurityProperties customSecurityProperties;
+    private OAuth2SecurityProperties OAuth2SecurityProperties;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -37,7 +37,7 @@ public class RemoteAuthorizationServerTokenStore implements TokenStore {
      */
     @Override
     public OAuth2AccessToken readAccessToken(String requestToken) {
-        String url = customSecurityProperties.getOauth2ReadAccessTokenRequest();
+        String url = OAuth2SecurityProperties.getOauth2ReadAccessTokenRequest();
         HttpHeaders requestHeaders = buildRequestHeader(requestToken);
         MultiValueMap<String, String> requestBody = buildRequestBody(requestToken);
         HttpEntity<MultiValueMap> requestEntity = new HttpEntity<>(requestBody, requestHeaders);
@@ -52,7 +52,7 @@ public class RemoteAuthorizationServerTokenStore implements TokenStore {
 
     @Override
     public OAuth2Authentication readAuthentication(OAuth2AccessToken token) {
-        String url = customSecurityProperties.getOauth2ReadAuthenticationRequest();
+        String url = OAuth2SecurityProperties.getOauth2ReadAuthenticationRequest();
         HttpHeaders requestHeaders = buildRequestHeader(token.getValue());
         MultiValueMap<String, String> requestBody = buildRequestBody(token.getValue());
         HttpEntity<MultiValueMap> requestEntity = new HttpEntity<>(requestBody, requestHeaders);
@@ -67,7 +67,7 @@ public class RemoteAuthorizationServerTokenStore implements TokenStore {
 
     @Override
     public void removeAccessToken(OAuth2AccessToken token) {
-        String url = customSecurityProperties.getOauth2RemoveAccessTokenRequest();
+        String url = OAuth2SecurityProperties.getOauth2RemoveAccessTokenRequest();
         HttpHeaders requestHeaders = buildRequestHeader(token.getValue());
         MultiValueMap<String, String> requestBody = buildRequestBody(token.getValue());
         HttpEntity<MultiValueMap> requestEntity = new HttpEntity<>(requestBody, requestHeaders);

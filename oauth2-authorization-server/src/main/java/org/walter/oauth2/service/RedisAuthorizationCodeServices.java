@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.provider.code.RandomValueAuthorizatio
 import org.springframework.stereotype.Service;
 import org.walter.oauth2.constant.Constants;
 import org.walter.oauth2.properties.CustomSecurityProperties;
-import org.walter.oauth2.utils.SerializerUtil;
+import org.walter.oauth2.SerializerUtil;
 
 import java.time.Duration;
 

@@ -11,9 +11,9 @@ import java.util.Collections;
 import java.util.Map;
 
 @Configuration
-@PropertySource("classpath:security.yml")
-@ConfigurationProperties("custom.security")
-public class CustomSecurityProperties {
+@PropertySource({"classpath:oauth2-security.yml"})
+@ConfigurationProperties("oauth2.security")
+public class OAuth2SecurityProperties {
     @Getter @Value("${test-uri-pattern}")
     private String testUriPattern;
     @Getter @Value("${oauth2-authorize-request}")

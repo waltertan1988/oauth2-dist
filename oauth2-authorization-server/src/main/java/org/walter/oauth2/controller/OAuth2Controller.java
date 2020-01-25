@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.walter.oauth2.utils.SerializerUtil;
+import org.walter.oauth2.SerializerUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.walter.oauth2.constant.Constants;
 import org.walter.oauth2.constant.GrantType;
 import org.walter.oauth2.properties.CustomSecurityProperties;
-import org.walter.oauth2.utils.SerializerUtil;
+import org.walter.oauth2.SerializerUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

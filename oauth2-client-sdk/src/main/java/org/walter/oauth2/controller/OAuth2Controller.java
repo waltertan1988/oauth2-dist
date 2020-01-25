@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
-import org.walter.oauth2.properties.CustomSecurityProperties;
-import org.walter.oauth2.utils.SerializerUtil;
+import org.walter.oauth2.properties.OAuth2SecurityProperties;
+import org.walter.oauth2.SerializerUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +30,7 @@ import java.util.Base64;
 public class OAuth2Controller {
 
     @Autowired
-    private CustomSecurityProperties customSecurityProperties;
+    private OAuth2SecurityProperties OAuth2SecurityProperties;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -45,7 +45,7 @@ public class OAuth2Controller {
     public String redirect(HttpServletResponse response,
                            @RequestParam("code") String code,
                            @RequestParam(value = "state") String state){
-        String tokenRequestUrl = customSecurityProperties.getOauth2TokenRequest();
+        String tokenRequestUrl = OAuth2SecurityProperties.getOauth2TokenRequest();
         MultiValueMap<String, String> requestBody = buildRequestBody(code, state, "all");
         HttpHeaders requestHeaders = buildRequestHeader();
         HttpEntity<MultiValueMap> requestEntity = new HttpEntity<>(requestBody, requestHeaders);
@@ -74,15 +74,15 @@ public class OAuth2Controller {
     }
 
     private Cookie createAccessTokenCookie(String tokenValue){
-        Cookie cookie = new Cookie(customSecurityProperties.getOauth2TokenCookieKey(), tokenValue);
+        Cookie cookie = new Cookie(OAuth2SecurityProperties.getOauth2TokenCookieKey(), tokenValue);
         cookie.setMaxAge(-1);
         return cookie;
     }
 
     private HttpHeaders buildRequestHeader(){
         HttpHeaders requestHeaders = new HttpHeaders();
-        String clientId = customSecurityProperties.getOauth2ClientId();
-        String clientSecret = customSecurityProperties.getOauth2ClientSecret();
+        String clientId = OAuth2SecurityProperties.getOauth2ClientId();
+        String clientSecret = OAuth2SecurityProperties.getOauth2ClientSecret();
         String authorizationString = String.format("%s:%s", clientId, clientSecret);
         String authorizationHeaderValue = "Basic " + Base64.getEncoder().encodeToString(authorizationString.getBytes());
         requestHeaders.add("Authorization", authorizationHeaderValue);
@@ -93,9 +93,9 @@ public class OAuth2Controller {
         MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
         requestBody.add(OAuth2Utils.GRANT_TYPE, "authorization_code");
         requestBody.add("code", authCode);
-        requestBody.add(OAuth2Utils.CLIENT_ID, customSecurityProperties.getOauth2ClientId());
-        requestBody.add("client_secret", customSecurityProperties.getOauth2ClientSecret());
-        requestBody.add(OAuth2Utils.REDIRECT_URI, customSecurityProperties.getOauth2AuthorizeRequestQueryParams().get(OAuth2Utils.REDIRECT_URI));
+        requestBody.add(OAuth2Utils.CLIENT_ID, OAuth2SecurityProperties.getOauth2ClientId());
+        requestBody.add("client_secret", OAuth2SecurityProperties.getOauth2ClientSecret());
+        requestBody.add(OAuth2Utils.REDIRECT_URI, OAuth2SecurityProperties.getOauth2AuthorizeRequestQueryParams().get(OAuth2Utils.REDIRECT_URI));
         requestBody.add(OAuth2Utils.SCOPE, scope);
         requestBody.add(OAuth2Utils.STATE, state);
         return requestBody;

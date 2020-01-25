@@ -1,4 +1,4 @@
-package org.walter.oauth2.utils;
+package org.walter.oauth2;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

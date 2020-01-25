@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.stereotype.Component;
-import org.walter.oauth2.properties.CustomSecurityProperties;
+import org.walter.oauth2.properties.OAuth2SecurityProperties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 @Component
 public class CustomHttp403ForbiddenEntryPoint extends Http403ForbiddenEntryPoint {
 	@Autowired
-	private CustomSecurityProperties customSecurityProperties;
+	private OAuth2SecurityProperties OAuth2SecurityProperties;
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
 			throws IOException, ServletException {
@@ -27,7 +27,7 @@ public class CustomHttp403ForbiddenEntryPoint extends Http403ForbiddenEntryPoint
 		PrintWriter out = response.getWriter();
 		response.setContentType("text/html;charset=UTF-8");
 		out.println(String.format("你暂无权限访问资源[%s]，请先<a href='%s'>授权</a><br>",
-				request.getRequestURI(), customSecurityProperties.getOauth2AuthorizeRequest()));
+				request.getRequestURI(), OAuth2SecurityProperties.getOauth2AuthorizeRequest()));
 		out.println(new ObjectMapper().writeValueAsString(exception.getMessage()));
 		out.flush();
 	}
