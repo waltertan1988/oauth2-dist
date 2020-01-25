@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 import org.walter.oauth2.service.CustomApprovalStoreUserApprovalHandler;
 import org.walter.oauth2.service.CustomTokenEnhancer;
 import org.walter.oauth2.service.RedisAuthorizationCodeServices;
+import org.walter.oauth2.service.UserDetailsServiceImpl;
 
 import javax.sql.DataSource;
 
@@ -31,6 +32,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private RedisConnectionFactory redisConnectionFactory;
     @Autowired
     private CustomTokenEnhancer customTokenEnhancer;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -47,7 +50,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 (ApprovalStoreUserApprovalHandler)endpoints.getUserApprovalHandler();
 
         endpoints.userApprovalHandler(customApprovalStoreUserApprovalHandler(innerUserApprovalHandler))
-                .tokenEnhancer(customTokenEnhancer);
+                .tokenEnhancer(customTokenEnhancer)
+                .userDetailsService(userDetailsService);
     }
 
     public UserApprovalHandler customApprovalStoreUserApprovalHandler(ApprovalStoreUserApprovalHandler innerUserApprovalHandler){
