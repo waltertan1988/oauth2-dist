@@ -6,7 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.walter.oauth2.properties.OAuth2SecurityProperties;
+import org.walter.oauth2.properties.CustomSecurityProperties;
 import org.walter.oauth2.service.CustomHttp403ForbiddenEntryPoint;
 import org.walter.oauth2.service.RemoteAuthorizationServerTokenStore;
 
@@ -14,7 +14,7 @@ import org.walter.oauth2.service.RemoteAuthorizationServerTokenStore;
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
     @Autowired
-    private OAuth2SecurityProperties OAuth2SecurityProperties;
+    private CustomSecurityProperties customSecurityProperties;
     @Autowired
     private CustomHttp403ForbiddenEntryPoint customHttp403ForbiddenEntryPoint;
     @Autowired
@@ -38,7 +38,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     private String[] permitAntPatterns(){
         return new String[]{
                 "/error", "/oauth2/redirect",
-                OAuth2SecurityProperties.getTestUriPattern()
+                customSecurityProperties.getTestUriPattern()
         };
     }
 

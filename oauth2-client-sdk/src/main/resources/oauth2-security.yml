@@ -1,11 +1,8 @@
 oauth2:
   security:
-    test-uri-pattern: /test/**
-    oauth2-authorize-request: http://localhost:7080/authServer/oauth/authorize?response_type=code&client_id=resServer&scope=all&redirect_uri=http://localhost:7081/resServer/oauth2/redirect&state=http://localhost:7081/resServer/resource
+    oauth2-authorize-request-pattern: http://localhost:7080/authServer/oauth/authorize?response_type=code&client_id=<CLIENT_ID>&scope=<SCOPE>&redirect_uri=<FULL_REDIRECT_URI>&state=<STATE>
     oauth2-token-request: http://localhost:7080/authServer/oauth/token
     oauth2-readAccessToken-request: http://localhost:7080/authServer/oauth2/readAccessToken
     oauth2-readAuthentication-request: http://localhost:7080/authServer/oauth2/readAuthentication
     oauth2-removeAccessToken-request: http://localhost:7080/authServer/oauth2/removeAccessToken
-    oauth2-client-id: resServer
-    oauth2-client-secret: resServerSecret
     oauth2-token-cookie-key: oauth2_access_token

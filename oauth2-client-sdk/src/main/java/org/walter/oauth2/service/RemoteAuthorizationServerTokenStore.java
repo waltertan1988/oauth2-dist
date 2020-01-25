@@ -26,7 +26,7 @@ import java.util.Collection;
 @Component
 public class RemoteAuthorizationServerTokenStore implements TokenStore {
     @Autowired
-    private OAuth2SecurityProperties OAuth2SecurityProperties;
+    private OAuth2SecurityProperties oAuth2SecurityProperties;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -37,7 +37,7 @@ public class RemoteAuthorizationServerTokenStore implements TokenStore {
      */
     @Override
     public OAuth2AccessToken readAccessToken(String requestToken) {
-        String url = OAuth2SecurityProperties.getOauth2ReadAccessTokenRequest();
+        String url = oAuth2SecurityProperties.getOauth2ReadAccessTokenRequest();
         HttpHeaders requestHeaders = buildRequestHeader(requestToken);
         MultiValueMap<String, String> requestBody = buildRequestBody(requestToken);
         HttpEntity<MultiValueMap> requestEntity = new HttpEntity<>(requestBody, requestHeaders);
@@ -52,7 +52,7 @@ public class RemoteAuthorizationServerTokenStore implements TokenStore {
 
     @Override
     public OAuth2Authentication readAuthentication(OAuth2AccessToken token) {
-        String url = OAuth2SecurityProperties.getOauth2ReadAuthenticationRequest();
+        String url = oAuth2SecurityProperties.getOauth2ReadAuthenticationRequest();
         HttpHeaders requestHeaders = buildRequestHeader(token.getValue());
         MultiValueMap<String, String> requestBody = buildRequestBody(token.getValue());
         HttpEntity<MultiValueMap> requestEntity = new HttpEntity<>(requestBody, requestHeaders);
@@ -67,7 +67,7 @@ public class RemoteAuthorizationServerTokenStore implements TokenStore {
 
     @Override
     public void removeAccessToken(OAuth2AccessToken token) {
-        String url = OAuth2SecurityProperties.getOauth2RemoveAccessTokenRequest();
+        String url = oAuth2SecurityProperties.getOauth2RemoveAccessTokenRequest();
         HttpHeaders requestHeaders = buildRequestHeader(token.getValue());
         MultiValueMap<String, String> requestBody = buildRequestBody(token.getValue());
         HttpEntity<MultiValueMap> requestEntity = new HttpEntity<>(requestBody, requestHeaders);
