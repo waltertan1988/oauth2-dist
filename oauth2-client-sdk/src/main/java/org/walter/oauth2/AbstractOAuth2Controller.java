@@ -49,11 +49,12 @@ public abstract class AbstractOAuth2Controller {
             OAuth2AccessToken accessToken = responseEntity.getBody();
             return handleOAuth2AccessToken(response, code, state, accessToken);
         }else{
-            return String.format("%s error<br>" +
-                    "code=%s<br>" +
-                    "state=%s", responseEntity.getStatusCode().value(), code, state);
+            log.error("[redirect] error: {}, {}, {}, {}", code, state, responseEntity.getStatusCode(), requestEntity.getBody());
+            return handleError(responseEntity.getStatusCode(), code, state);
         }
     }
+
+    protected abstract String handleError(HttpStatus httpStatus, String code, String state);
 
     protected abstract String handleOAuth2AccessToken(HttpServletResponse response,
                                                       String code, String state,

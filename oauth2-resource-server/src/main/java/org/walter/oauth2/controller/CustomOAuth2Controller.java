@@ -2,6 +2,7 @@ package org.walter.oauth2.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Controller;
 import org.walter.oauth2.AbstractOAuth2Controller;
@@ -30,6 +31,13 @@ public class CustomOAuth2Controller extends AbstractOAuth2Controller {
         return String.format("code=%s<br>" +
                 "state=%s<br>" +
                 "token=%s", code, state, SerializerUtil.toJson(accessToken));
+    }
+
+    @Override
+    protected String handleError(HttpStatus httpStatus, String code, String state) {
+        return String.format("%s error<br>" +
+                "code=%s<br>" +
+                "state=%s", httpStatus.value(), code, state);
     }
 
     /**
