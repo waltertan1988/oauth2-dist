@@ -18,14 +18,8 @@ public class CustomOAuth2Controller extends AbstractOAuth2Controller {
     @Autowired
     private OAuth2SecurityProperties oAuth2SecurityProperties;
 
-    /**
-     * 自定义OAuth2重定向的url
-     * @param code 授权码
-     * @param state 目标资源的url
-     * @return 访问令牌AccessToken
-     */
     @Override
-    protected String handleOAuth2AccessToken(HttpServletResponse response, String code, String state, OAuth2AccessToken accessToken) {
+    protected String handleSuccess(HttpServletResponse response, String code, String state, OAuth2AccessToken accessToken) {
         // 把AccessToken写入客户端
         sendAccessTokenToClient(response, accessToken.getValue());
         return String.format("code=%s<br>" +

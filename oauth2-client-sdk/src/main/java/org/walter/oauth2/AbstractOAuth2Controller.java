@@ -32,7 +32,7 @@ public abstract class AbstractOAuth2Controller {
     protected ClientInfoService clientInfoService;
 
     /**
-     * 自定义OAuth2重定向的url
+     * OAuth2资源服务器redirect_uri的处理逻辑，核心逻辑是用授权码从AuthorizationServer处获取令牌AccessToken
      * @param code 授权码
      * @param state 目标资源的url
      * @return 访问令牌AccessToken
@@ -47,18 +47,33 @@ public abstract class AbstractOAuth2Controller {
         ResponseEntity<OAuth2AccessToken> responseEntity = restTemplate.postForEntity(tokenRequestUrl, requestEntity, OAuth2AccessToken.class);
         if(HttpStatus.OK.equals(responseEntity.getStatusCode())){
             OAuth2AccessToken accessToken = responseEntity.getBody();
-            return handleOAuth2AccessToken(response, code, state, accessToken);
+            return handleSuccess(response, code, state, accessToken);
         }else{
             log.error("[redirect] error: {}, {}, {}, {}", code, state, responseEntity.getStatusCode(), requestEntity.getBody());
             return handleError(responseEntity.getStatusCode(), code, state);
         }
     }
 
+    /**
+     * 获取令牌AccessToken失败时的处理方法
+     * @param httpStatus
+     * @param code
+     * @param state
+     * @return
+     */
     protected abstract String handleError(HttpStatus httpStatus, String code, String state);
 
-    protected abstract String handleOAuth2AccessToken(HttpServletResponse response,
-                                                      String code, String state,
-                                                      OAuth2AccessToken accessToken);
+    /**
+     * 获取令牌AccessToken成功时的处理方法
+     * @param response
+     * @param code
+     * @param state
+     * @param accessToken
+     * @return
+     */
+    protected abstract String handleSuccess(HttpServletResponse response,
+                                            String code, String state,
+                                            OAuth2AccessToken accessToken);
 
     protected HttpEntity<MultiValueMap> buildRequestEntity(String code, String state, ClientInfoService clientInfoService){
         MultiValueMap<String, String> requestBody = buildRequestBody(code, state, clientInfoService);
