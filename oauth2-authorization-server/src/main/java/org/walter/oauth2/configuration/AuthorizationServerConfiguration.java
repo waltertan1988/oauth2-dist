@@ -42,7 +42,10 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.authorizationCodeServices(redisAuthorizationCodeServices)
+        endpoints
+                // 每次执行RefreshToken时，都产生一个新的刷新令牌并保存起来，并删除旧的刷新令牌
+                .reuseRefreshTokens(false)
+                .authorizationCodeServices(redisAuthorizationCodeServices)
                 .tokenStore(redisTokenStore())
                 .setClientDetailsService(jdbcClientDetailsService());
 
