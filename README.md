@@ -11,11 +11,11 @@
 ### 公共依赖模块（oauth2-commons）
 
 ### 关于刷新令牌（RefreshToken）
-在取得访问令牌串和刷新令牌串且访问令牌串已失效时，可通过以下请求进行刷新令牌（即获取新的访问令牌串和刷新令牌串）：
-[METHOD]POST
-[HEADER] Authorization:bearer {刷新令牌串}
-[URL] http://localhost:7080/authServer/oauth/token
-[BODY]
-grant_type:refresh_token
-refresh_token: {刷新令牌串}
-scope: {预定义的scope}
+在取得访问令牌串和刷新令牌串且访问令牌串已失效时，可通过以下请求进行刷新令牌（即获取新的访问令牌串和刷新令牌串）：  
+[METHOD]POST  
+[HEADER] Authorization:bearer {刷新令牌串}  
+[URL] http://localhost:7080/authServer/oauth/token  
+[BODY]  
+grant_type:refresh_token  
+refresh_token: {刷新令牌串}  
+scope: {预定义的scope}  
