@@ -23,6 +23,4 @@ public class CustomSecurityProperties {
     private String oauth2ApprovalRequest;
     @Value("${oauth2-authcode-alive-seconds}")
     private Long oauth2AuthCodeAliveSeconds;
-    @Value("${authentication-cookie-key}")
-    private String authenticationCookieKey;
 }

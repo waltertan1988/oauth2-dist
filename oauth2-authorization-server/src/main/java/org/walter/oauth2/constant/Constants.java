@@ -11,6 +11,12 @@ public class Constants {
         public static final String CLIENT_SECRET = "client-secret";
     }
 
+    public static class Cookie{
+        private Cookie(){}
+        public static final String LOGIN_REDIRECT_URL_COOKIE_KEY = "loginRedirectUrl";
+        public static final String AUTHENTICATION_COOKIE_KEY = "authentication";
+    }
+
     public static class Cache {
         private Cache(){}
         public static class Security {

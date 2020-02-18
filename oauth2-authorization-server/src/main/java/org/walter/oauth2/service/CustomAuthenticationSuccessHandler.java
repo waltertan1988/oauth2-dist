@@ -9,12 +9,14 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.walter.oauth2.SerializerUtil;
 import org.walter.oauth2.constant.Constants;
 import org.walter.oauth2.constant.GrantType;
 import org.walter.oauth2.properties.CustomSecurityProperties;
-import org.walter.oauth2.SerializerUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +35,8 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 	private AuthorizationServerTokenServices authorizationServerTokenServices;
 	@Autowired
 	private CookieService cookieService;
+
+	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
 	/**
 	 * 认证成功后的处理逻辑
@@ -63,7 +67,15 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 			out.print(SerializerUtil.toJson(oAuth2AccessToken));
 			out.flush();
 		}else{
-			super.onAuthenticationSuccess(request, response, authentication);
+			clearAuthenticationAttributes(request);
+			String loginRedirectUrl = getLoginRedirectUrl(request, response);
+			redirectStrategy.sendRedirect(request, response, loginRedirectUrl);
 		}
+	}
+
+	private String getLoginRedirectUrl(HttpServletRequest request, HttpServletResponse response){
+		String url = cookieService.readBase64ValueFromCookie(request.getCookies(), Constants.Cookie.LOGIN_REDIRECT_URL_COOKIE_KEY);
+		cookieService.deleteCookie(request, response, Constants.Cookie.LOGIN_REDIRECT_URL_COOKIE_KEY);
+		return url;
 	}
 }

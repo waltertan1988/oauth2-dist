@@ -1,20 +1,17 @@
 package org.walter.oauth2.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.walter.oauth2.properties.CustomSecurityProperties;
+import org.walter.oauth2.constant.Constants;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
 
 @Service
 public class CookieService {
-    @Autowired
-    private CustomSecurityProperties customSecurityProperties;
-
     /**
      * 把Authentication写入Cookie
      * @param response
@@ -23,7 +20,7 @@ public class CookieService {
      * @param path
      */
     public void addAuthenticationCookie(HttpServletResponse response, Authentication authentication, String domain, String path){
-        Cookie cookie = createBase64ValueCookie(customSecurityProperties.getAuthenticationCookieKey(),
+        Cookie cookie = createBase64ValueCookie(Constants.Cookie.AUTHENTICATION_COOKIE_KEY,
                 authentication.getName(), domain, path);
         response.addCookie(cookie);
     }
@@ -43,15 +40,18 @@ public class CookieService {
      * @return
      */
     public String resolveUsername(Cookie[] cookies){
-        String username = readBase64ValueFromCookie(cookies, customSecurityProperties.getAuthenticationCookieKey());
+        String username = readBase64ValueFromCookie(cookies, Constants.Cookie.AUTHENTICATION_COOKIE_KEY);
         return username;
     }
 
+    public Cookie createBase64ValueCookie(String key, String value, String domain, String path){
+        return createBase64ValueCookie(key, value, domain, path, -1);
+    }
 
-    private Cookie createBase64ValueCookie(String key, String value, String domain, String path){
+    public Cookie createBase64ValueCookie(String key, String value, String domain, String path, int maxAge){
         String cookieValue = Base64.getEncoder().encodeToString(value.getBytes());
         Cookie cookie = new Cookie(key, cookieValue);
-        cookie.setMaxAge(-1);
+        cookie.setMaxAge(maxAge);
         if(StringUtils.hasText(domain)){
             cookie.setDomain(domain);
         }
@@ -62,7 +62,7 @@ public class CookieService {
         return cookie;
     }
 
-    private String readBase64ValueFromCookie(Cookie[] cookies, String key){
+    public String readBase64ValueFromCookie(Cookie[] cookies, String key){
         if(cookies == null){
             return null;
         }
@@ -73,5 +73,14 @@ public class CookieService {
         }
 
         return null;
+    }
+
+    public void deleteCookie(HttpServletRequest request, HttpServletResponse response, String key){
+        for (Cookie cookie : request.getCookies()) {
+            if(cookie.getName().equals(key)){
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+            }
+        }
     }
 }
