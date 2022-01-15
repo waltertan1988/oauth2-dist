@@ -19,8 +19,6 @@ public class CustomSecurityProperties implements ClientInfoService {
     private String oauth2ClientSecret;
     @Getter @Value("${oauth2-redirect-url}")
     private String oauth2RedirectURl;
-    @Getter @Value("${oauth2-state}")
-    private String oauth2State;
     @Getter @Value("${oauth2-scope}")
     private String oauth2Scope;
 }

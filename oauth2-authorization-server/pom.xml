@@ -6,7 +6,7 @@
 		<groupId>org.walter.oauth2</groupId>
 		<artifactId>oauth2-dist</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.walter.oauth2</groupId>
 	<artifactId>oauth2-authorization-server</artifactId>
@@ -58,11 +58,7 @@
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>28.1-jre</version>
-		</dependency>
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-pool2</artifactId>

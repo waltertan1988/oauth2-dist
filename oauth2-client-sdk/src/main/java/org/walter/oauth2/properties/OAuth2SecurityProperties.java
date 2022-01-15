@@ -2,6 +2,7 @@ package org.walter.oauth2.properties;
 
 import com.google.common.collect.Maps;
 import lombok.Getter;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -32,33 +33,33 @@ public class OAuth2SecurityProperties {
     @Getter @Value("${oauth2-removeAccessToken-request}")
     private String oauth2RemoveAccessTokenRequest;
 
-    public String getOauth2AuthorizeRequest(){
+    public String getOauth2AuthorizeRequest(String state){
         return oauth2AuthorizeRequestPattern
                 .replace("<FULL_REDIRECT_URI>", clientInfoService.getOauth2RedirectURl())
                 .replace("<CLIENT_ID>", clientInfoService.getOauth2ClientId())
-                .replace("<STATE>", clientInfoService.getOauth2State())
+                .replace("<STATE>", state)
                 .replace("<SCOPE>", clientInfoService.getOauth2Scope());
     }
 
-    private Map<String, String> oauth2AuthorizeRequestQueryParamMap;
-    public Map<String, String> getOauth2AuthorizeRequestQueryParams(){
-        if(oauth2AuthorizeRequestQueryParamMap == null){
-            synchronized (this){
-                if(oauth2AuthorizeRequestQueryParamMap == null){
-                    Map<String, String> map = Maps.newHashMap();
-                    String queryString = getOauth2AuthorizeRequest().split("\\?")[1];
-                    for(String entryString : queryString.split("&")){
-                        String[] entry = entryString.split("=");
-                        if(entry.length == 1){
-                            map.put(entry[0], entry[0]);
-                        }else{
-                            map.put(entry[0], entry[1]);
-                        }
-                    }
-                    oauth2AuthorizeRequestQueryParamMap = Collections.unmodifiableMap(map);
-                }
-            }
-        }
-        return oauth2AuthorizeRequestQueryParamMap;
-    }
+    // private Map<String, String> oauth2AuthorizeRequestQueryParamMap;
+    // public Map<String, String> getOauth2AuthorizeRequestQueryParams(){
+    //     if(oauth2AuthorizeRequestQueryParamMap == null){
+    //         synchronized (this){
+    //             if(oauth2AuthorizeRequestQueryParamMap == null){
+    //                 Map<String, String> map = Maps.newHashMap();
+    //                 String queryString = getOauth2AuthorizeRequest().split("\\?")[1];
+    //                 for(String entryString : queryString.split("&")){
+    //                     String[] entry = entryString.split("=");
+    //                     if(entry.length == 1){
+    //                         map.put(entry[0], entry[0]);
+    //                     }else{
+    //                         map.put(entry[0], entry[1]);
+    //                     }
+    //                 }
+    //                 oauth2AuthorizeRequestQueryParamMap = Collections.unmodifiableMap(map);
+    //             }
+    //         }
+    //     }
+    //     return oauth2AuthorizeRequestQueryParamMap;
+    // }
 }

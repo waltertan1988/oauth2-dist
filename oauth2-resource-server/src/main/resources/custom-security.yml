@@ -4,5 +4,4 @@ custom:
     oauth2-client-id: resServer
     oauth2-client-secret: resServerSecret
     oauth2-redirect-url: http://localhost:7081/resServer/oauth2/redirect
-    oauth2-state: http://localhost:7081/resServer/resource
     oauth2-scope: all
