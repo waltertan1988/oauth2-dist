@@ -17,8 +17,8 @@ CREATE TABLE `acl_user` (
   UNIQUE KEY `UK_51bvuyvihefoh4kp5syh2jpi4` (`username`),
   UNIQUE KEY `UK_51bvuyvihefoh4kp5syh2jpi5` (`mobile`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-insert into `acl_user` (`id`, `username`, `password`, `user_real_name`, `mobile`, `gender`, `is_expired`, `is_locked`, `is_password_expired`, `is_enabled`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) values(null,'0009785','$2a$10$8r2tGdMtSLfEHbYV/3ZmE.90ivYb7h1y7TyHy86l9mDADMA89SH2O','walter.tan','13123456789','M','','','','','*ADMIN',now(),'*ADMIN',now());
-insert into `acl_user` (`id`, `username`, `password`, `user_real_name`, `mobile`, `gender`, `is_expired`, `is_locked`, `is_password_expired`, `is_enabled`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) values(null,'walter','$2a$10$8r2tGdMtSLfEHbYV/3ZmE.90ivYb7h1y7TyHy86l9mDADMA89SH2O','waltertan','13987654321','M','','','','','*ADMIN',now(),'*ADMIN',now());
+insert into `acl_user` (`id`, `username`, `password`, `user_real_name`, `mobile`, `gender`, `is_expired`, `is_locked`, `is_password_expired`, `is_enabled`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) values(null,'0009785','$2a$10$8r2tGdMtSLfEHbYV/3ZmE.90ivYb7h1y7TyHy86l9mDADMA89SH2O','walter.tan','13123456789','M','','','',b'1','*ADMIN',now(),'*ADMIN',now());
+insert into `acl_user` (`id`, `username`, `password`, `user_real_name`, `mobile`, `gender`, `is_expired`, `is_locked`, `is_password_expired`, `is_enabled`, `created_by`, `created_date`, `last_modified_by`, `last_modified_date`) values(null,'walter','$2a$10$8r2tGdMtSLfEHbYV/3ZmE.90ivYb7h1y7TyHy86l9mDADMA89SH2O','waltertan','13987654321','M','','','',b'1','*ADMIN',now(),'*ADMIN',now());
 
 CREATE TABLE `oauth_client_details` (
   `client_id` varchar(255) NOT NULL,
