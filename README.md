@@ -1,7 +1,6 @@
 # oauth2-dist
 一个基于OAuth2协议（授权码模式）、SpringBoot2.x、Spring Security和Redis的自定义授权服务器、资源服务器整合的SSO单点授权登录例子。
-## OAuth2授权登录的时序交互设计图
-![Pandao editor.md](https://github.com/waltertan1988/oauth2-dist/blob/master/oauth2-doc/charts/oauth2.png?raw=true "oauth2.png")
+
 ## 开始使用
 ### 初始化数据
 参看oauth2-doc/db/schema.sql
@@ -24,6 +23,10 @@
 > bearer eyJvQWNjZXNzVG9rZW5WYWx1ZSI6IjdiMmJhMTZkLWM3OWQtNDcxOC1hNDU1LWU4ZmM4ZWQ3MTI2NyIsInVzZXJuYW1lIjoiMDAwOTc4NSJ9
 
 此时可以成功访问资源了
+
+## 系统说明
+### OAuth2授权登录的时序交互设计图
+![Pandao editor.md](https://github.com/waltertan1988/oauth2-dist/blob/master/oauth2-doc/charts/oauth2.png?raw=true "oauth2.png")
 
 ### 授权服务器（oauth2-authorization-server）
 
