@@ -1,0 +1,19 @@
+@startuml
+participant 客户端App as app
+
+box "资源服务器ResourceServer" #LightBlue
+participant SpringSecurity as rss
+participant ClientSDK as sdk
+participant 受保护资源 as res
+endbox
+
+box "授权服务器AuthorizationServer" #LightGreen
+participant SpringSecurity as ass
+participant AuthorizationEndpoint as aep
+participant TokenEndpoint as atep
+participant Redis as redis
+participant OAuth2Controller as actl
+endbox
+
+
+@enduml
