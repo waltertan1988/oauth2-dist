@@ -67,7 +67,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 			out.print(SerializerUtil.toJson(oAuth2AccessToken));
 			out.flush();
 		}else{
-			clearAuthenticationAttributes(request);
+			super.clearAuthenticationAttributes(request);
 			String loginRedirectUrl = getLoginRedirectUrl(request, response);
 			redirectStrategy.sendRedirect(request, response, loginRedirectUrl);
 		}
