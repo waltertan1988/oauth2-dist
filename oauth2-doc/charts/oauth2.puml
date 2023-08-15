@@ -11,8 +11,8 @@ box "授权服务器\nAuthorizationServer" #LightGreen
 participant SpringSecurity as ass
 participant AuthorizationEndpoint as aep
 participant TokenEndpoint as atep
-participant Redis as redis
 participant OAuth2Controller as actl
+participant Redis as redis
 endbox
 
 app -> rss: 1.1 请求资源
@@ -79,9 +79,29 @@ deactivate atep
 sdk --> app: 3.12 保存访问令牌串及刷新令牌串
 deactivate sdk
 
-deactivate aep
+app -> rss: 4.1 带上访问令牌串请求资源
+activate rss
+rss -> rss: 4.2 OAuth2AuthenticationProcessingFilter拦截
+rss -> sdk: 4.3 调用SDK
+activate sdk
+sdk -> actl: 4.4 根据访问令牌串，获取授权服务器上的令牌对象OAuth2AccessToken
+activate actl
+actl -> redis: 4.5 获取令牌对象
+activate redis
+redis --> actl: 返回成功
+deactivate redis
+actl --> sdk: 4.6 返回令牌对象OAuth2AccessToken
+deactivate actl
+sdk --> rss: 4.7 返回
+deactivate sdk
 
-deactivate ass
+rss -> rss: 4.8 从令牌对象解析出Authentication
+rss -> res: 4.9 访问资源
+deactivate rss
+
+activate res
+res --> app: 4.10 返回资源
+deactivate res
 
 deactivate app
 @enduml
