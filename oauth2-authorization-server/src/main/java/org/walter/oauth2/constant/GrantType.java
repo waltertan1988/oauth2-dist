@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum GrantType {
 
-    CODE("code", "授权码"),
-    CUSTOM("custom", "自定义");
+    GRANT_CODE("grantCode", "授权码模式"),
+    PASSWORD("password", "密码模式");
 
     private String value;
     private String desc;

@@ -49,7 +49,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
 		String grantType = request.getParameter(Constants.LoginFormFieldName.GRANT_TYPE);
 
-		if(StringUtils.equals(grantType, GrantType.CUSTOM.getValue())){
+		if(StringUtils.equals(grantType, GrantType.PASSWORD.getValue())){
 			String clientId = request.getParameter(Constants.LoginFormFieldName.CLIENT_ID);
 			String clientSecret = request.getParameter(Constants.LoginFormFieldName.CLIENT_SECRET);
 			ClientDetails clientDetails = clientDetailsService.loadClientByClientId(clientId);

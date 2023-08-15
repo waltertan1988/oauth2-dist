@@ -6,12 +6,12 @@
 </head>
 <body>
     <form method="post" action="/authServer/login">
-        <input type="hidden" name="client-id" value="demo">
-        <input type="hidden" name="client-secret" value="demosecret">
+        <!-- //TODO 这里的client-id和client-secret，仅用于演示自定义模式，原则上应该要隐藏 -->
+        <input type="hidden" name="client-id" value="grantTypePwDemo">
+        <input type="hidden" name="client-secret" value="grantTypePwDemoSecret">
 
-        <label>普通登录</label><input type="radio" name="grant-type" value="none">
-        <label>授权码模式</label><input type="radio" name="grant-type" value="code" checked="checked">
-        <label>自定义模式</label><input type="radio" name="grant-type" value="custom"><br>
+        <label>密码模式</label><input type="radio" name="grant-type" value="password">
+        <label>授权码模式</label><input type="radio" name="grant-type" value="grantCode" checked="checked">
         <label>账号：</label><input type="text" name="username"><br>
         <label>密码：</label><input type="password" name="password"><br>
         <input type="submit" value="登录">

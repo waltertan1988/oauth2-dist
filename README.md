@@ -13,11 +13,12 @@
 * Step1: 客户端请求获取资源http://localhost:7081/resServer/resource  
 此时无权限，无法访问，提示要先授权
 
-* Step2：点击“授权”，尝试进入授权页面，此时发现未登录并重定向到登录页面，选“授权码模式”登录
+* Step2：点击“授权”，尝试进入授权页面，此时发现未登录并重定向到登录页面。可选择不同模式获取访问令牌。
+> 密码模式：登录成功后立即返回生成的访问令牌、刷新令牌  
+>
+> 授权码模式：登录成功后重定向回到授权页面，选择同意。此时页面会返回生成的授权码、访问令牌、刷新令牌。  
 
-* Step3：登录成功后重定向回到授权页面，选择同意。此时页面会返回生成的授权码、访问令牌、刷新令牌
-
-* Step4: 使用访问令牌再次访问资源http://localhost:7081/resServer/resource  
+* Step3: 使用访问令牌再次访问资源http://localhost:7081/resServer/resource  
 > 访问资源时，注意要在header带上Authorization请求头，其值为bearer <访问令牌值>  
 > 例如：  
 > bearer eyJvQWNjZXNzVG9rZW5WYWx1ZSI6IjdiMmJhMTZkLWM3OWQtNDcxOC1hNDU1LWU4ZmM4ZWQ3MTI2NyIsInVzZXJuYW1lIjoiMDAwOTc4NSJ9
