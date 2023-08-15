@@ -1,13 +1,13 @@
 @startuml
 participant 客户端App as app
 
-box "资源服务器ResourceServer" #LightBlue
+box "资源服务器\nResourceServer" #LightBlue
 participant SpringSecurity as rss
 participant ClientSDK as sdk
 participant 受保护资源 as res
 endbox
 
-box "授权服务器AuthorizationServer" #LightGreen
+box "授权服务器\nAuthorizationServer" #LightGreen
 participant SpringSecurity as ass
 participant AuthorizationEndpoint as aep
 participant TokenEndpoint as atep
@@ -15,5 +15,73 @@ participant Redis as redis
 participant OAuth2Controller as actl
 endbox
 
+app -> rss: 1.1 请求资源
+activate app
 
+activate rss
+rss --> app: 1.2 无权限
+deactivate rss
+
+app -> ass: 2.1 重定向到授权服务器的授权请求页面/oauth/authorize
+activate ass
+ass --> app : 2.2 无权限并重定向到授权服务器的登录页面/login
+deactivate ass
+
+app -> ass: 2.3 输入登录认证信息
+activate ass
+ass -> ass: 2.4 数据库认证成功
+ass -> redis: 2.5 Authentication写入Redis
+activate redis
+redis --> ass: 返回成功
+deactivate redis
+ass --> app: 2.6 保存Authentication到Cookie
+
+app -> ass: 2.7 带上Cookie的Authentication信息，重定向到授权服务器的授权请求页/oauth/authorize
+ass -> aep: 2.8 解析Cookie并Redis认证成功
+activate aep
+aep -> aep: 2.9 校验ClientDetail信息
+aep --> app: 2.10 重定向到授权同意or拒绝的选项页面/oauth2/approval
+deactivate aep
+
+app -> ass: 3.1 带上Cookie的Authentication信息，提交授权选项
+ass -> aep: 3.2 解析Cookie并Redis认证成功
+deactivate ass
+
+activate aep
+aep -> redis: 3.3 生成授权码并写入Redis
+activate redis
+redis --> aep: 返回成功
+deactivate redis
+aep --> sdk: 3.4 把授权码返回给资源服务器的redirect_uri
+deactivate aep
+
+activate sdk
+sdk -> ass: 3.5 用授权码获取访问令牌/oauth/token
+activate ass
+ass -> redis: 3.6 TokenEndpointAuthenticationFilter拦截并根据授权码从Redis获取Authentication
+activate redis
+redis --> ass: 返回成功
+deactivate redis
+
+ass -> atep: 3.7 请求进入到/oauth/token的控制器
+deactivate ass
+
+activate atep
+atep -> atep: 3.8 校验请求参数及ClientDetail信息
+atep -> atep: 3.9 生成用username包裹的访问令牌及刷新令牌
+atep -> redis: 3.10 保存令牌对象OAuth2AccessToken
+activate redis
+redis --> atep: 返回成功
+deactivate redis
+atep --> sdk: 3.11 返回访问令牌串及刷新令牌串
+deactivate atep
+
+sdk --> app: 3.12 保存访问令牌串及刷新令牌串
+deactivate sdk
+
+deactivate aep
+
+deactivate ass
+
+deactivate app
 @enduml
