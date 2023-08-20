@@ -6,9 +6,8 @@
 		<groupId>org.walter.oauth2</groupId>
 		<artifactId>oauth2-dist</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>org.walter.oauth2</groupId>
 	<artifactId>oauth2-resource-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>oauth2-resource-server</name>
@@ -57,8 +56,8 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>

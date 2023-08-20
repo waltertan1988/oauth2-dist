@@ -6,9 +6,8 @@
 		<groupId>org.walter.oauth2</groupId>
 		<artifactId>oauth2-dist</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>org.walter.oauth2</groupId>
 	<artifactId>oauth2-client-sdk</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>oauth2-client-sdk</name>

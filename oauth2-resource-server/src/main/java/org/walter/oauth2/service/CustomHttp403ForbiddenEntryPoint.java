@@ -9,7 +9,6 @@ import org.springframework.security.web.authentication.Http403ForbiddenEntryPoin
 import org.springframework.stereotype.Component;
 import org.walter.oauth2.properties.OAuth2SecurityProperties;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -21,7 +20,7 @@ public class CustomHttp403ForbiddenEntryPoint extends Http403ForbiddenEntryPoint
 	private OAuth2SecurityProperties oAuth2SecurityProperties;
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
-			throws IOException, ServletException {
+			throws IOException {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=UTF-8");
 		response.setStatus(HttpStatus.FORBIDDEN.value());

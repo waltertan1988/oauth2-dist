@@ -11,7 +11,6 @@ import org.walter.oauth2.SerializerUtil;
 import org.walter.oauth2.constant.Constants;
 import org.walter.oauth2.properties.CustomSecurityProperties;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,11 +24,11 @@ public class CustomHttp403ForbiddenEntryPoint extends Http403ForbiddenEntryPoint
 	@Autowired
 	private CookieService cookieService;
 
-	private RequestCache requestCache = new HttpSessionRequestCache();
+	private final RequestCache requestCache = new HttpSessionRequestCache();
 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
-			throws IOException, ServletException {
+			throws IOException {
 
 		addLoginRedirectUrlToCookie(request, response);
 

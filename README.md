@@ -37,8 +37,6 @@
 ### 关于刷新令牌（RefreshToken）
 在取得访问令牌串和刷新令牌串且访问令牌串已失效时，可通过以下请求进行刷新令牌（即获取新的访问令牌串和刷新令牌串）：  
 [METHOD]POST  
-[URL] http://localhost:7080/authServer/oauth/token  
-[BODY]  
-grant_type:refresh_token  
-refresh_token: {刷新令牌串}  
-scope: {预定义的scope}  ,这里填all即可
+[URL] http://localhost:7080/authServer/oauth/token?grant_type=refresh_token&refresh_token={旧的刷新令牌串}&scope={预定义的scope}  
+> grant_type：固定写死为refresh_token  
+> {预定义的scope}：这里填all即可  
