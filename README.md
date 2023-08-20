@@ -2,7 +2,11 @@
 一个基于OAuth2协议（授权码模式）、SpringBoot2.x、Spring Security和Redis的自定义授权服务器、资源服务器整合的SSO单点授权登录例子。
 
 ## 开始使用
-### 初始化数据
+### 依赖中间件
+* mysql
+* redis
+
+### mysql初始化数据
 参看oauth2-doc/db/schema.sql
 
 登录用户名：0009785或walter
