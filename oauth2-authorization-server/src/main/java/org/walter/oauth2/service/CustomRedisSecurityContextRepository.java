@@ -81,13 +81,13 @@ public class CustomRedisSecurityContextRepository implements SecurityContextRepo
     private String resolveUsername(HttpServletRequest request){
         // 尝试从Cookie中获取username
         String username = cookieService.resolveUsername(request.getCookies());
-        if(!StringUtils.isEmpty(username)){
+        if(StringUtils.hasText(username)){
             return username;
         }
 
         // 尝试从Header中获取username
         username = resolveUsernameFromHeader(request);
-        if(!StringUtils.isEmpty(username)){
+        if(StringUtils.hasText(username)){
             return username;
         }
 

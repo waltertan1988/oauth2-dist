@@ -40,8 +40,7 @@ public class CookieService {
      * @return
      */
     public String resolveUsername(Cookie[] cookies){
-        String username = readBase64ValueFromCookie(cookies, Constants.Cookie.AUTHENTICATION_COOKIE_KEY);
-        return username;
+        return readBase64ValueFromCookie(cookies, Constants.Cookie.AUTHENTICATION_COOKIE_KEY);
     }
 
     public Cookie createBase64ValueCookie(String key, String value, String domain, String path){
