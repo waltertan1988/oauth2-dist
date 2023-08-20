@@ -67,8 +67,9 @@ public class CookieService {
         }
 
         for (Cookie cookie : cookies) {
-            if(cookie.getName().equals(key))
+            if(cookie.getName().equals(key)) {
                 return new String(Base64.getDecoder().decode(cookie.getValue()));
+            }
         }
 
         return null;
