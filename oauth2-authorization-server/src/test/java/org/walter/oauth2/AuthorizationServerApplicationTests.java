@@ -1,16 +1,16 @@
 package org.walter.oauth2;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.annotation.Resource;
 
-@Slf4j
 @SpringBootTest(classes = AuthorizationServerApplication.class)
 class AuthorizationServerApplicationTests {
 
@@ -22,11 +22,29 @@ class AuthorizationServerApplicationTests {
 	void contextLoads() {
 	}
 
-	@Test
-	void loadUserByUsername() {
-		String username = "0009785";
-		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-		Assertions.assertNotNull(userDetails);
-		Assertions.assertEquals(username, userDetails.getUsername());
+	@Nested
+	@DisplayName("测试UserDetailsService类")
+	class UserDetailsServiceTest {
+
+		@ParameterizedTest
+		@ValueSource(strings = {"0009785", StringUtils.EMPTY})
+		void loadUserByUsername(String username) {
+			switch (username) {
+				case "0009785":
+					UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+					Assertions.assertAll(
+							() -> Assertions.assertNotNull(userDetails),
+							() -> Assertions.assertEquals(username, userDetails.getUsername())
+					);
+					break;
+				case StringUtils.EMPTY:
+					Assertions.assertThrows(UsernameNotFoundException.class,
+							() -> userDetailsService.loadUserByUsername(username)
+					);
+					break;
+				default:
+					Assertions.fail("没有测试逻辑的参数：" + username);
+			}
+		}
 	}
 }
