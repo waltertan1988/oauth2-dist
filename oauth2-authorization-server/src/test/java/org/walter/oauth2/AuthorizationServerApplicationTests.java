@@ -25,19 +25,21 @@ class AuthorizationServerApplicationTests {
 	@Nested
 	@DisplayName("测试UserDetailsService类")
 	class UserDetailsServiceTest {
+		private static final String USERNAME_EXIST = "0009785";
+		private static final String USERNAME_NOT_EXIST = StringUtils.EMPTY;
 
 		@ParameterizedTest
-		@ValueSource(strings = {"0009785", StringUtils.EMPTY})
+		@ValueSource(strings = {USERNAME_EXIST, USERNAME_NOT_EXIST})
 		void loadUserByUsername(String username) {
 			switch (username) {
-				case "0009785":
+				case USERNAME_EXIST:
 					UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 					Assertions.assertAll(
 							() -> Assertions.assertNotNull(userDetails),
 							() -> Assertions.assertEquals(username, userDetails.getUsername())
 					);
 					break;
-				case StringUtils.EMPTY:
+				case USERNAME_NOT_EXIST:
 					Assertions.assertThrows(UsernameNotFoundException.class,
 							() -> userDetailsService.loadUserByUsername(username)
 					);
