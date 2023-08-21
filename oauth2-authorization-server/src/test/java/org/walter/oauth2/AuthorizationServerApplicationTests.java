@@ -14,9 +14,6 @@ import javax.annotation.Resource;
 @SpringBootTest(classes = AuthorizationServerApplication.class)
 class AuthorizationServerApplicationTests {
 
-	@Resource(name = "userDetailsServiceImpl")
-	private UserDetailsService userDetailsService;
-
 	@Test
 	@Disabled
 	void contextLoads() {
@@ -25,6 +22,10 @@ class AuthorizationServerApplicationTests {
 	@Nested
 	@DisplayName("测试UserDetailsService类")
 	class UserDetailsServiceTest {
+
+		@Resource(name = "userDetailsServiceImpl")
+		private UserDetailsService userDetailsService;
+
 		private static final String USERNAME_EXIST = "0009785";
 		private static final String USERNAME_NOT_EXIST = StringUtils.EMPTY;
 
