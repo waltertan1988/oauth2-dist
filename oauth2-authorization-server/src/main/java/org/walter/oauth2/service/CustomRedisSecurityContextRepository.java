@@ -31,7 +31,7 @@ public class CustomRedisSecurityContextRepository implements SecurityContextRepo
     @Autowired
     private CustomTokenEnhancer customTokenEnhancer;
 
-    private TokenExtractor tokenExtractor = new BearerTokenExtractor();
+    private final TokenExtractor tokenExtractor = new BearerTokenExtractor();
 
     @Override
     public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
@@ -44,7 +44,7 @@ public class CustomRedisSecurityContextRepository implements SecurityContextRepo
 
     @Override
     public void saveContext(SecurityContext context, HttpServletRequest request, HttpServletResponse response) {
-        if(context.getAuthentication() == null || context.getAuthentication() == null){
+        if(context == null || context.getAuthentication() == null){
             return;
         }
         String username = context.getAuthentication().getName();
